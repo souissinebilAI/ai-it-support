@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{f4b0ebfd-56f0-48c5-81a2-1a9dedbf72ed}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cra73_newcolumn" select="1" icon="1" preview="1">
+        <row name="result" id="cra73_itticketsid">
+          <cell name="cra73_newcolumn" width="300" />
+          <cell name="cra73_titel" width="150" />
+          <cell name="cra73_problem" width="150" />
+          <cell name="cra73_priority" width="150" />
+          <cell name="cra73_status" width="150" />
+          <cell name="cra73_mitarbeiter" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cra73_ittickets">
+          <attribute name="cra73_itticketsid" />
+          <attribute name="cra73_newcolumn" />
+          <attribute name="createdon" />
+          <order attribute="cra73_newcolumn" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cra73_titel" />
+          <attribute name="cra73_problem" />
+          <attribute name="cra73_priority" />
+          <attribute name="cra73_status" />
+          <attribute name="cra73_mitarbeiter" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active IT-Tickets" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,409 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  Screen2:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - Label3:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(232, 244, 217, 1)
+            Font: =Font.Arial
+            FontWeight: =FontWeight.Bold
+            Height: =71
+            Size: =30
+            Text: ="IT Ticket Overview"
+            Width: =363
+            X: =480
+            Y: =20
+      - galTickets:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            BorderThickness: =0.5
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =558
+            Items: |-
+              =Sort(
+                  Sort(
+                      Filter(
+                          'IT-Tickets',
+                          (
+                              IsBlank(txtSearch.Text) ||
+                              StartsWith(Titel, txtSearch.Text) ||
+                              StartsWith(Problem, txtSearch.Text)
+                          ) &&
+                          (
+                              ddStatusFilter.Selected.Value = "All" ||
+                              'Status (cra73_status)' =
+                              Switch(
+                                  ddStatusFilter.Selected.Value,
+                                  "Open", 'Status (IT-Tickets)'.Open,
+                                  "In progress", 'Status (IT-Tickets)'.'In progress',
+                                  "Resolved", 'Status (IT-Tickets)'.Resolved
+                              )
+                          ) &&
+                          (
+                              ddPriorityFilter.Selected.Value = "All" ||
+                              Priority =
+                              Switch(
+                                  ddPriorityFilter.Selected.Value,
+                                  "Low", 'Priority (IT-Tickets)'.Low,
+                                  "Medium", 'Priority (IT-Tickets)'.Medium,
+                                  "High", 'Priority (IT-Tickets)'.High,
+                                  "Critical", 'Priority (IT-Tickets)'.Critical
+                              )
+                          )
+                      ),
+                      Switch(
+                          'Status (cra73_status)',
+                          'Status (IT-Tickets)'.Open, 1,
+                          'Status (IT-Tickets)'.'In progress', 2,
+                          'Status (IT-Tickets)'.Resolved, 3,
+                          4
+                      ),
+                      SortOrder.Ascending
+                  ),
+                  Switch(
+                      Priority,
+                      'Priority (IT-Tickets)'.Critical, 1,
+                      'Priority (IT-Tickets)'.High, 2,
+                      'Priority (IT-Tickets)'.Medium, 3,
+                      'Priority (IT-Tickets)'.Low, 4,
+                      5
+                  ),
+                  SortOrder.Ascending
+              )
+            TemplateSize: =112
+            Width: =1203
+            X: =82
+            Y: =186
+          Children:
+            - Image4:
+                Control: Image@2.2.3
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Height: =72
+                  OnSelect: =Select(Parent)
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =72
+                  X: =16
+                  Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            - Title4:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  BorderThickness: =1
+                  Color: =RGBA(50, 49, 48, 1)
+                  Fill: =RGBA(232, 244, 217, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =45
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =18
+                  Text: =" " & ThisItem.Titel
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =300
+                  X: =103
+                  Y: =8
+            - Subtitle4:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  BorderThickness: =1
+                  Fill: =RGBA(204, 231, 246, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =35
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =" " & ThisItem.Problem
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =300
+                  X: =Title4.X
+                  Y: =Title4.Y + Title4.Height
+            - NextArrow4:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  AccessibleLabel: =Self.Tooltip
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(0, 0, 0, 1)
+                  DisabledBorderColor: =RGBA(56, 56, 56, 1)
+                  DisabledColor: =RGBA(119, 119, 119, 1)
+                  Fill: =RGBA(220, 153, 153, 1)
+                  Height: =50
+                  Icon: =Icon.ChevronRight
+                  OnSelect: |+
+                    =Set(
+                        varSelectedTicket,
+                        ThisItem
+                    );
+                    Navigate(
+                        Screen3
+                    )
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Tooltip: ="View item details"
+                  Width: =50
+                  X: =Parent.TemplateWidth - Self.Width - 12
+                  Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            - Separator4:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(202, 202, 202, 1)
+                  Height: =8
+                  OnSelect: =Select(Parent)
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - Self.Height
+            - Rectangle4:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 18, 107, 1)
+                  Height: =Parent.TemplateHeight - Separator4.Height
+                  OnSelect: =Select(Parent)
+                  Visible: =ThisItem.IsSelected
+                  Width: =4
+            - Label4:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  BorderThickness: =1
+                  Color: |-
+                    =Switch(
+                        ThisItem.Priority,
+                        'Priority (IT-Tickets)'.Critical, ColorValue("#991B1B"),
+                        'Priority (IT-Tickets)'.High, ColorValue("#9A3412"),
+                        'Priority (IT-Tickets)'.Medium, ColorValue("#1E40AF"),
+                        'Priority (IT-Tickets)'.Low, ColorValue("#166534"),
+                        Color.Black
+                    )
+                  Fill: |-
+                    =Switch(
+                        ThisItem.Priority,
+                        'Priority (IT-Tickets)'.Critical, ColorValue("#FECACA"),
+                        'Priority (IT-Tickets)'.High, ColorValue("#FED7AA"),
+                        'Priority (IT-Tickets)'.Medium, ColorValue("#BFDBFE"),
+                        'Priority (IT-Tickets)'.Low, ColorValue("#D1FAE5"),
+                        ColorValue("#E5E7EB")
+                    )
+                  Font: =Font.'Open Sans'
+                  Height: =44
+                  OnSelect: =Select(Parent)
+                  Size: =20
+                  Text: =ThisItem.Priority
+                  X: =579
+                  Y: =8
+            - Label5:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  BorderThickness: =1
+                  Color: |-
+                    =Switch(
+                        ThisItem.'Status (cra73_status)',
+                        'Status (IT-Tickets)'.Open, ColorValue("#92400E"),
+                        'Status (IT-Tickets)'.'In progress', ColorValue("#1E40AF"),
+                        'Status (IT-Tickets)'.Resolved, ColorValue("#166534"),
+                        Color.Black
+                    )
+                  Fill: |-
+                    =Switch(
+                        ThisItem.'Status (cra73_status)',
+                        'Status (IT-Tickets)'.Open, ColorValue("#FDE68A"),
+                        'Status (IT-Tickets)'.'In progress', ColorValue("#BFDBFE"),
+                        'Status (IT-Tickets)'.Resolved, ColorValue("#BBF7D0"),
+                        ColorValue("#E5E7EB")
+                    )
+                  Font: =Font.'Open Sans'
+                  Height: =45
+                  OnSelect: =Select(Parent)
+                  Size: =16
+                  Text: =ThisItem.'Status (cra73_status)'
+                  X: =906
+                  Y: =8
+            - Label6:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  BorderThickness: =1
+                  Fill: =RGBA(232, 244, 217, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =44
+                  OnSelect: =Select(Parent)
+                  Size: =20
+                  Text: ="Priority:"
+                  Width: =120
+                  X: =459
+                  Y: =8
+            - Label8:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  BorderThickness: =1
+                  Fill: =RGBA(232, 244, 217, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =45
+                  OnSelect: =Select(Parent)
+                  Size: =20
+                  Text: ="Status:"
+                  Width: =120
+                  X: =786
+                  Y: =8
+            - Label7:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =42
+                  OnSelect: =Select(Parent)
+                  Size: =16
+                  Text: |-
+                    =IfError(
+                        "Email: "&ThisItem.Mitarbeiter.'E-Mail',
+                        "Not assigned"
+                    )
+                  Width: =352
+                  X: =459
+                  Y: =58
+            - Label22:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(166, 166, 166, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =45
+                  OnSelect: =Select(Parent)
+                  Size: =12
+                  Text: |-
+                    ="Assigned: " & If(
+                        IsBlank(ThisItem.'Assigned To'),
+                        "Unassigned",
+                        ThisItem.'Assigned To'.'Name (cra73_name)'
+                    )
+                  Width: =240
+                  X: =816
+                  Y: =56
+      - txtSearch:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =
+            Font: =Font.'Open Sans'
+            Height: =39
+            HintText: ="Search tickets..."
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Size: =20
+            Width: =318
+            X: =94
+            Y: =121
+      - ddStatusFilter:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Default: ="All"
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: |-
+              =[
+                  "All",
+                  "Open",
+                  "In progress",
+                  "Resolved"
+              ]
+            Items.Value: =Value
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Size: =20
+            Width: =150
+            X: =520
+            Y: =120
+      - ddPriorityFilter:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: =["All", "Low", "Medium", "High", "Critical"]
+            Items.Value: =Value
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Size: =20
+            Width: =150
+            X: =782
+            Y: =120
+      - lblTicketCount:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Size: =18
+            Text: = CountRows(galTickets.AllItems) & " Tickets"
+            Width: =124
+            X: =1161
+            Y: =146
+      - Label2:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =42
+            Size: =16
+            Text: ="Status:"
+            Width: =86
+            X: =434
+            Y: =118
+      - Label10:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =43
+            Size: =16
+            Text: ="Priority:"
+            Width: =98
+            X: =684
+            Y: =117

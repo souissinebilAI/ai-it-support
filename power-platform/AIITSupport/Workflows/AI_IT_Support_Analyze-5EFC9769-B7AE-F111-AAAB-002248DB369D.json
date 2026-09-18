@@ -1,0 +1,129 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_webcontents": {
+        "api": {
+          "name": "shared_webcontents"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "cra73_sharedwebcontents_47f3c"
+        },
+        "runtimeSource": "invoker"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Problem",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "EmployeeEmail",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "6f2bc45b-30f3-47b6-8c9a-20f09c84b9c9"
+          }
+        }
+      },
+      "actions": {
+        "Invoke_an_HTTP_request": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "request/method": "POST",
+              "request/url": "https://ai-it-support-foundry.services.ai.azure.com/api/projects/proj-default/openai/v1/responses",
+              "request/headers": {
+                "Content-Type": "application/json"
+              },
+              "request/body": "{\n  \"input\": \"Analysiere diese IT-Support-Anfrage:\\n\\nProblem: @{triggerBody()?['text']}\\nMitarbeiter-E-Mail: @{triggerBody()?['text_1']}\",\n  \"agent_reference\": {\n    \"name\": \"ai-it-support-agent\",\n    \"type\": \"agent_reference\"\n  }\n}"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_webcontents",
+              "operationId": "InvokeHttp",
+              "connectionName": "shared_webcontents"
+            }
+          },
+          "runAfter": {}
+        },
+        "Respond_to_a_Power_App_or_flow": {
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "airesponse": {
+                  "title": "AIResponse",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                },
+                "recommendedpriority": {
+                  "title": "RecommendedPriority",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "additionalProperties": {}
+            },
+            "statusCode": 200,
+            "body": {
+              "airesponse": "@{outputs('Compose')}",
+              "recommendedpriority": "@{trim(\r\n    first(\r\n        split(\r\n            last(\r\n                split(\r\n                    body('Invoke_an_HTTP_request')?['output'][1]?['content'][0]?['text'],\r\n                    'Recommended priority:'\r\n                )\r\n            ),\r\n            '\\n'\r\n        )\r\n    )\r\n)}"
+            }
+          },
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Compose": {
+          "type": "Compose",
+          "inputs": "@body('Invoke_an_HTTP_request')?['output'][1]?['content'][0]?['text']",
+          "runAfter": {
+            "Invoke_an_HTTP_request": [
+              "Succeeded"
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

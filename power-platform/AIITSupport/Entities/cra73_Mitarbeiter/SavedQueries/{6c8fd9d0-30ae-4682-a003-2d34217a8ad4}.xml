@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{6c8fd9d0-30ae-4682-a003-2d34217a8ad4}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cra73_newcolumn" select="1" icon="1" preview="1">
+        <row name="result" id="cra73_mitarbeiterid">
+          <cell name="cra73_newcolumn" width="300" />
+          <cell name="cra73_name" width="150" />
+          <cell name="cra73_email" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cra73_mitarbeiter">
+          <attribute name="cra73_mitarbeiterid" />
+          <attribute name="cra73_newcolumn" />
+          <attribute name="createdon" />
+          <order attribute="cra73_newcolumn" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cra73_name" />
+          <attribute name="cra73_email" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Mitarbeiters" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
