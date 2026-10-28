@@ -53,6 +53,7 @@ The AI recommendation is integrated directly into the Power Apps workflow.
 
 For example:
 
+```text
 User reports a company-wide network outage
               ↓
 Microsoft Foundry analyzes the request
@@ -66,7 +67,11 @@ Power Apps selects "Critical"
 User can review or change the priority
               ↓
 Ticket is submitted to Dataverse IT Ticket
+```
 
+## Architecture
+
+```text
                          ┌─────────────────────┐
                          │      Employee       │
                          └──────────┬──────────┘
@@ -107,29 +112,17 @@ Ticket is submitted to Dataverse IT Ticket
                                   │ Microsoft       │◄─────┘
                                   │ Dataverse       │
                                   └─────────────────┘
+```
+
 ## Technology Stack
 
 | Technology               | Purpose                                   |
-
+|--------------------------|-------------------------------------------|
 | Microsoft Power Apps     | Canvas App and user interface             |
 | Microsoft Dataverse      | IT ticket and employee data               |
 | Microsoft Power Automate | Workflow orchestration and AI integration |
 | Microsoft Foundry        | AI agent and model integration            |     
 | GitHub                   | Source control and documentation          |
-
-## Key Features
-
-- IT ticket creation
-- Employee validation
-- Ticket search and filtering
-- Ticket status management
-- Ticket assignment
-- AI-powered IT issue analysis
-- AI issue categorization
-- AI priority recommendation
-- AI-generated troubleshooting guidance
-- AI recommendation integrated into the Power Apps workflow
-- Human override of AI recommendations
 
 ## AI Workflow
 
