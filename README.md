@@ -12,6 +12,24 @@ The AI recommendation is then returned to the application and can influence the 
 
 ---
 
+## 📸 Screenshots
+
+All data shown is test data from the development environment.
+
+**1. Submit a ticket.** The employee describes the problem; *Analyze with AI* asks the Foundry agent for a category and a priority, which is pre-selected and can be changed before sending.
+
+![Ticket form with name, email, priority, problem description and the Analyze with AI button](docs/screenshots/1-ticket-form.webp)
+
+**2. Ticket overview.** IT staff search tickets and filter by status and priority.
+
+![Ticket overview listing four tickets with priority, status, employee email and assigned technician](docs/screenshots/2-ticket-overview.webp)
+
+**3. Ticket details.** IT staff update the status and assign a technician.
+
+![Ticket details with problem, priority, status, employee, and controls to update status and assign a worker](docs/screenshots/3-ticket-details.webp)
+
+---
+
 ## ✨ Key Features
 
 ### 🎫 IT Ticket Management
